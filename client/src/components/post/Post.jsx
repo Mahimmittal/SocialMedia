@@ -1,6 +1,6 @@
 import "./post.css";
 import { MoreVert } from "@mui/icons-material";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
@@ -63,8 +63,8 @@ export default function Post({ post }) {
           <MoreVert />
         </div>
         <div className="postCenter">
-          <span className="postText">{post?.desc}</span>
-          <img src={post.img} alt="" className="postImg" />
+          <span className="postText">{post ? post.desc : null}</span>
+          <img src={post.img ? PF + post.img : ""} alt="" className="postImg" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">

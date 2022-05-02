@@ -1,5 +1,6 @@
 import "./sidebar.css";
 import { Users } from "../../dummyData";
+import React from "react";
 import {
   RssFeed,
   Chat,

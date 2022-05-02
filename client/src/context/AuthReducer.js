@@ -18,9 +18,34 @@ const AuthReducer = (state, action) => {
         isFetching: false,
         error: action.payload,
       };
+    case "FOLLOW":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          followings: [...state.user.followings, action.payload],
+        },
+      };
+    case "UNFOLLOW":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          followings: state.user.followings.filter(
+            (following) => following !== action.payload
+          ),
+        },
+      };
     default:
       return state;
   }
 };
-
+export const Follow = (userId) => ({
+  type: "FOLLOW",
+  payload: userId,
+});
+export const Unfollow = (userId) => ({
+  type: "UNFOLLOW",
+  payload: userId,
+});
 export default AuthReducer;

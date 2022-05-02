@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./feed.css";
 import Share from "../Share/Share";
 import Post from "../post/Post";
@@ -16,16 +16,22 @@ export default function Feed({ username }) {
         : await axios.get("posts/timeline/" + user._id, {
             baseURL: "http://localhost:8000/api",
           });
-      setPosts(res.data);
+      setPosts(
+        res.data.sort((p1, p2) => {
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        })
+      );
     };
     fetchPosts();
-  }, [username, user._id]);
+  }, [username, user ? user._id : user]);
   return (
     <div className="feed">
-      <Share />
-      {posts.map((p) => (
-        <Post key={p._id} post={p} />
-      ))}
+      <div className="feedWrapper">
+        {(!username || username === user.username) && <Share />}
+        {posts.map((p) => (
+          <Post key={p._id} post={p} />
+        ))}
+      </div>
     </div>
   );
 }

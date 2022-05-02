@@ -3,14 +3,14 @@ import Topbar from "../../components/topbar/Topbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
   const username = useParams().username;
-  // console.log(params);
+  // console.log(username);
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?username=${username}`, {
@@ -20,7 +20,7 @@ export default function Profile() {
     };
 
     fetchUser();
-  }, []);
+  }, [username]);
   return (
     <>
       <Topbar />
@@ -30,12 +30,20 @@ export default function Profile() {
           <div className="profileRightTop">
             <div className="profileCover">
               <img
-                src={user.coverPicture || PF + "person/noCover.jpg"}
+                src={
+                  user.coverPicture
+                    ? PF + user.coverPicture
+                    : PF + "person/noCover.jpg"
+                }
                 alt=""
                 className="profileCoverImg"
               />
               <img
-                src={user.profilePicture || PF + "person/noAvatar.png"}
+                src={
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    : PF + "person/noAvatar.png"
+                }
                 alt=""
                 className="profileUserImg"
               />
