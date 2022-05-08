@@ -6,7 +6,7 @@ import { CircularProgress } from "@mui/material";
 export default function Login() {
   const email = useRef();
   const password = useRef();
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch } = useContext(AuthContext);
   const handleClick = (e) => {
     e.preventDefault();
     loginCall(
@@ -19,9 +19,9 @@ export default function Login() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h3 className="loginLogo">LamaSocial</h3>
+          <h3 className="loginLogo">Social</h3>
           <span className="loginDesc">
-            Connect with the friends and world around you on Lamasocial.
+            Connect with the friends and world around you on Social.
           </span>
         </div>
         <div className="loginRight">
