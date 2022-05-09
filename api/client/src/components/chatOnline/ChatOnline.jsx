@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "../../config.js";
 import React, { useEffect, useState } from "react";
 import "./chatOnline.css";
 export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
@@ -7,9 +7,7 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   useEffect(() => {
     const getFriends = async () => {
-      const res = await axios.get("/users/friends/" + currentId, {
-        baseURL: "http://localhost:8000/api/",
-      });
+      const res = await axiosInstance.get("/users/friends/" + currentId);
       setFriends(res.data);
     };
     getFriends();
@@ -20,11 +18,8 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
   }, [onlineFriends, friends]);
   const handleClick = async (user) => {
     try {
-      const res = await axios.get(
-        `/conversations/find/${currentId}/${user._id}`,
-        {
-          baseURL: "http://localhost:8000/api/",
-        }
+      const res = await axiosInstance.get(
+        `/conversations/find/${currentId}/${user._id}`
       );
       setCurrentChat(res.data);
     } catch (err) {

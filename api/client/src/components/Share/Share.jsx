@@ -2,7 +2,7 @@ import "./share.css";
 import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material";
 import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+import { axiosInstance } from "../../config.js";
 import { Cancel } from "@material-ui/icons";
 export default function Share() {
   const { user } = useContext(AuthContext);
@@ -22,16 +22,14 @@ export default function Share() {
       data.append("name", fileName);
 
       try {
-        newPost.img = await axios.post("/upload/", data, {
-          baseURL: "http://localhost:8000/api/",
-        });
+        newPost.img = await axiosInstance.post("/upload/", data);
       } catch (err) {
         console.log(err);
       }
     }
     newPost.img = newPost.img.data;
     try {
-      await axios.post("/posts/", newPost, {
+      await axiosInstance.post("/posts/", newPost, {
         baseURL: "http://localhost:8000/api/",
       });
       window.location.reload();

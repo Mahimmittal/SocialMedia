@@ -2,7 +2,7 @@ import "./register.css";
 import React, { useRef } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { axiosInstance } from "../../config.js";
 export default function Register() {
   const email = useRef();
   const username = useRef();
@@ -20,7 +20,7 @@ export default function Register() {
         password: password.current.value,
       };
       try {
-        await axios.post("http://localhost:8000/api/auth/register", user);
+        await axiosInstance.post("/auth/register", user);
         navigate("/login", { replace: true });
       } catch (err) {
         console.log(err);

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./feed.css";
 import Share from "../Share/Share";
 import Post from "../post/Post";
-import axios from "axios";
+import { axiosInstance } from "../../config.js";
 import { AuthContext } from "../../context/AuthContext";
 export default function Feed({ username }) {
   const [posts, setPosts] = useState([]);
@@ -10,12 +10,8 @@ export default function Feed({ username }) {
   useEffect(() => {
     const fetchPosts = async () => {
       const res = username
-        ? await axios.get("/posts/profile/" + username, {
-            baseURL: "http://localhost:8000/api",
-          })
-        : await axios.get("posts/timeline/" + user._id, {
-            baseURL: "http://localhost:8000/api",
-          });
+        ? await axiosInstance.get("/posts/profile/" + username)
+        : await axiosInstance.get("posts/timeline/" + user._id);
       setPosts(
         res.data.sort((p1, p2) => {
           return new Date(p2.createdAt) - new Date(p1.createdAt);

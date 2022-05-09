@@ -1,7 +1,7 @@
 import "./post.css";
 import { MoreVert } from "@mui/icons-material";
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { axiosInstance } from "../../config.js";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -17,11 +17,9 @@ export default function Post({ post }) {
   }, [currentUser._id, post.likes]);
   const likeHandler = () => {
     try {
-      axios.put(
-        "/posts/" + post._id + "/like",
-        { userId: currentUser._id },
-        { baseURL: "http://localhost:8000/api" }
-      );
+      axiosInstance.put("/posts/" + post._id + "/like", {
+        userId: currentUser._id,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -30,9 +28,7 @@ export default function Post({ post }) {
   };
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`, {
-        baseURL: "http://localhost:8000/api",
-      });
+      const res = await axiosInstance.get(`/users?userId=${post.userId}`);
       setUser(res.data);
       // console.log(res.data);
     };
