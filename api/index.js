@@ -27,7 +27,7 @@ mongoose.connect(
   }
 );
 app.use(cors());
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
@@ -36,6 +36,8 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + file.originalname);
   },
 });
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use(express.static(path.join(__dirname, "/client/build/")));
 
 // Middlewares
 const upload = multer({ storage });
@@ -55,22 +57,20 @@ app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
-
-app.get("/", (req, res) => {
-  res.send("Welcome to homepage");
-});
-app.use(express.static(path.join(__dirname, "/client/build")));
-
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+  res
+    .set(
+      "Content-Security-Policy",
+      "style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'"
+    )
+    .sendFile(path.join(__dirname, "/client/build/", "index.html"));
 });
-
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log("Backend server is running on port 8000");
 });
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://mahimsocialapp.herokuapp.com/",
   },
 });
 let users = [];
